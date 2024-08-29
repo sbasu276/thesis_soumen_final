@@ -1,0 +1,18 @@
+\section{Dataset Collection and Curation}
+
+\myfirstpara{Data Collection}
+%
+We acquired data samples from patients referred to PGIMER, Chandigarh (a tertiary care referral hospital in Northern India) for abdominal ultrasound examinations of suspected \gb pathologies. The study was approved by the Ethics Committee of PGIMER. We obtained informed written consent from the patients at the time of recruitment, and protect their privacy by fully anonymizing the data. Minimum 10 grayscale B-mode static images, including both sagittal and axial sections, were recorded by radiologists for each patient using a Logiq S8 machine. We excluded color Doppler, spectral Doppler, annotations, and measurements. Supplementary A %\ref{supp:data_collection} 
+contains more details of the data acquisition process.
+
+\mypara{Labeling and ROI Annotation}
+%
+Each image is labeled as one of the three classes - normal, benign, or malignant. The ground-truth labels were biopsy-proven to assert the correctness. Additionally, in each image, expert radiologists have drawn an axis-aligned bounding box spanning the entire \gb and adjacent liver parenchyma to annotate the \roi. 
+
+\mypara{Dataset Statistics}
+%
+We have annotated 1255 abdominal \usg images collected from 218 patients from the acquired image corpus. Overall, we have 432 normal, 558 benign, and 265 malignant images. Of the 218 patients, 71, 100, and 47 were from the normal, benign, and malignant classes, respectively. The width of the images was between 801 and 1556 pixels, and the height was between 564 and 947 pixels due to the cropping of patient-related information. 
+
+\mypara{Dataset Splits}
+%
+The sizes of the training and testing sets are 1133 and 122, respectively. To ensure generalization to unseen patients, all images of any particular patient were either in the train or the test split. The number of normal, benign, and malignant samples in the train and test set is 401, 509, 223, and 31, 49, and 42, respectively. Additionally, we report the 10-fold cross-validation metrics on the entire dataset for key experiments to assess generalization. All images of any particular patient appeared either in the training or the validation split during the cross-validation. 

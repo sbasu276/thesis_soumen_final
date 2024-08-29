@@ -1,0 +1,164 @@
+\documentclass[11pt,times]{article}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+%\usepackage{medima}
+\usepackage{geometry}
+\geometry{twoside,
+  paperwidth=210mm,
+  paperheight=280mm,
+  textheight=635.35pt,
+  textwidth=467.75pt,
+  inner=32pt,
+  outer=43pt,
+  top=65pt,
+  bottom=40pt,
+  headheight=12pt,
+  headsep=12pt,
+  footskip=16pt,
+  footnotesep=28pt plus 2pt minus 6pt,
+  columnsep=18pt
+ }
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{soul}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{multirow}
+%\usepackage[belowskip=0pt,aboveskip=5pt]{caption}
+\setlength{\textfloatsep}{11pt}
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex. (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks,bookmarks=false]{hyperref}
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+% If you wish to avoid re-using figure, table, and equation numbers from
+% the main paper, please uncomment the following and change the numbers
+% appropriately.
+%\setcounter{figure}{2}
+%\setcounter{table}{1}
+%\setcounter{equation}{2}
+
+% If you wish to avoid re-using reference numbers from the main paper,
+% please uncomment the following and change the counter for `enumiv' to
+% the number of references you have in the main paper (here, 6).
+%\let\oldthebibliography=\thebibliography
+%\let\oldendthebibliography=\endthebibliography
+%\renewenvironment{thebibliography}[1]{%
+%     \oldthebibliography{#1}%
+%     \setcounter{enumiv}{6}%
+%}{\oldendthebibliography}
+
+\newcommand{\ra}[1]{\textcolor{Periwinkle}{#1}}
+\newcommand{\rb}[1]{\textcolor{PineGreen}{#1}}
+\newcommand{\rc}[1]{\textcolor{YellowGreen}{#1}}
+
+\newcommand{\rev}[1]{\textcolor{MidnightBlue}{#1}}
+
+\newcommand{\myfirstpara}[1]{\noindent \textbf{\textit{#1}}}
+\newcommand{\mypara}[1]{\vspace{0.75em} \myfirstpara{#1}\\}
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{\Large Response Document Addressing Examiners' Queries \\
+{ Thesis Title: Deep Learning Models for Detecting Gallbladder Cancer from Ultrasound \\ Soumen Basu (2019CSZ8406)}}  % **** Enter the paper title here
+\date{}
+
+\maketitle
+\thispagestyle{empty}
+\appendix
+{\fontfamily{ptm}\selectfont
+
+\noindent We thank the thesis examiners for their time and effort in reading the thesis, and providing valuable suggestions. A few minor comments were suggested to be addressed in the final version of the thesis. %In this response document, we clarify the examiner's queries. We have also revised the thesis addressing all the comments. 
+
+\section*{Minor Comments}
+
+\mypara{In chapter 2 --  detailed description of the general phenomenon of ultrasound and its capture with all aspects of this process are detailed. This include modes of ultrasound capture, the probes and the details about the body planes are provided. While these are covered in general, it is not clear the specific characteristics of the data that is captured in this thesis. For instance, what mode and probes are used for capturing the the data in this thesis are not clear. This could be clarified.}
+%
+We thank the examiner for the suggestion. We would like to clarify that, as mentioned in the organization of the thesis in Chapter 1.6, Chapter 2 discusses the ultrasound process in general to familiarize the reader with the procedure and terminology, while Chapter 3 discusses the detailed specifics of our data, including acquisition, probe/mode, annotation, and statistics.
+
+\noindent The data used in this thesis was captured using a Logiq S8 (GE Healthcare) machine with a curvilinear probe type C1-5-D operating at a frequency of 1-5 MHz in B-mode ultrasound. These details are provided in Chapter 3 (Data Collection).
+
+As per the suggestion from the examiner, \rev{we have added a sub-section in Chapter 2 (Section 2.3 -- ``Brief Specification of Our Data'', Pg 15)}, briefly mentioning the specifics of capturing our data and directing the reader to Chapter 3 for further details. %We appreciate the examiner's feedback to enhance the clarity of the thesis.
+
+\mypara{In chapter 2 -- details about the noise and challenges in capturing ultrasound are mentioned. These are also mentioned in each of the contribution chapters. These are however mentioned in passing. It could be perhaps noted exactly what noise and challenges are addressed specifically in the thesis and to what extent. This helps clarify the extent to which the problem can be solved. Especially as the later chapters mention high accuracies of 92\% and 96\% accuracy, it is not clear to what extent are these numbers generalisable given the characteristics of noise that are mentioned. If more data is captured with differing probes, modes, noise and operator behaviour, what kind of generalisation can be expected is not clear.}
+%
+We would like to clarify that the noise and challenges mentioned in Chapter 2 are predominantly those we encountered in our work. \rev{As per the examiner's suggestion, we have modified the text in Section 2.4 ("Noise and Artifact in Abdominal Ultrasound," Pg. 16-17) and Section 2.5 ("Major Challenges")} to explicitly clarify the noise, artifacts, and challenges that are specific to this thesis. We have also added Subsection 2.5.8 (Pg. 24) to discuss the scope of this work in tackling the encountered challenges, and the generalisation.
+We appreciate this suggestion towards improving the clarity of the thesis. \rev{Following italized text is added as Section 2.5.8 in Pg. 24--25}:
+
+\vspace{0.5em}
+``\textit{In this work, our developed techniques in Chapters 4--8 could solve the issues arising from the noises and artifacts such as acoustic shadows, bias to echogenic textures, small sized pathological regions, variation in appearance due to non-regular anatomy to a large extent in our data. To tackle the lack of annotated data, self-supervised representation learning has also been utilized. The issues related to operator and viewpoint variability largely affects the image-based GBC detectors. The use of video-based detectors could mitigate the effect of operator and viewpoint variability.}
+
+\textit{It is important to note that we have primarily addressed multiple issues of DNN-based GBC detection on single-center retrospective ultrasound data setting. A precise assessment of the methods in tackling acquisition shifts and their generalization performance requires more data from different centers, as single-center data only involves a few radiologists and a limited set of ultrasound apparatus. Due to the absence of publicly available data or other hospitals' data, we could not quantitatively assess the robustness and generalization performance for GBC detection, and noted it as a future research direction. However, it is important to note that the inherent issues such as noise, textures, and non-regular anatomy would remain constant for GBC ultrasound data from other centers. Additionally, we have demonstrated the generality and applicability of the developed methods on datasets for other diseases, such as breast cancer, COVID-19, and polyp detection, indicating the generalizability of the methods.}
+
+\textit{Furthermore, our data collection was from an apex tertiary care hospital in Northern India, which attends patients from different states, ethnicities, genders, and demographics. The patients are not localized to the region of the hospital, and far-off patients also visit for care. This ensures a high degree of patient variability in our data. Thus, we expect our techniques to perform robustly. Nonetheless, some performance drop is expected while applying the models on unseen data from other centers due to operator and equipment variability.}'' 
+%Especially image-based detection models tend to be more susceptible to acquisition shift arising from operator variability.}''
+
+\mypara{In each of the contribution chapters 4--8, there is a lot of repetition from the introduction that refers to the challenges of ultrasound detection and specifically the variability and other aspects. However, each of these chapters also provide very high accuracies that are consistently over 85\%. These are somehow contradictory in nature with the introduction of each chapter emphasising (repeatedly) the challenges that make the process difficult, but, each of these chapters also towards the end provide an indication that leads one to believe that the problem is completely solved (especially with very high accuracy of 96\% for instance in chapter 8). Would it be possible to revisit the challenges in hindsight and provide a clear statement that considers the extent to which these results should be believed. For instance, one could perhaps downplay the results by mentioning that these do not represent generalised results as they are limited to a single centre with very few radiologists being involved. Otherwise, the impression one ends up with is that gallbladder cancer detection is solved, which may not be the case. The minor comment about repetition could also perhaps be addressed.}
+%
+Thank you for the comment. We have previously mentioned two major limitations of the study: (i) lack of real-time patient data, and (ii) lack of data from multiple centers. As noted in the response to the previous comment, our techniques were demonstrated to solve the key challenges such as the presence of acoustic shadows, bias to echogenic textures, small objects (pathology), variable appearance owing to non-regular anatomy, and limited data in detecting GBC from Ultrasound using DNN models in the single center retrospective data settings.
+
+%the techniques and methods developed in this thesis, such as focused regions-of-interest, smoothing-based curriculum, multi-scale features, second-order feature attention, and global-local features, address some of the key challenges inherent to ultrasound-based GBC detection. Challenges such as the presence of acoustic shadows, bias to echogenic textures, small object size (pathology), variation in appearance an non-regular anatomy of GBC were well addressed through our methods. The lack of annotated data is tackled through self-supervised pretraining and weakly supervised approaches. The video-based classification method helps mitigate issues of operator bias. Our techniques were demonstrated to solve the problem of GBC detection from ultrasound in the single center retrospective data settings.
+
+%The techniques and methods developed in this thesis, such as focused regions-of-interest, smoothing-based curriculum, multi-scale features, second-order feature attention, and global-local features, address some of the key challenges inherent to ultrasound-based GBC detection. The lack of annotated data is tackled through self-supervised pretraining and weakly supervised detectors. The video-based classification method in \Cref{chap:focusmae} helps mitigate issues of operator bias.  
+
+It is noteworthy that our data collection center is a top tertiary care referral hospital in Northern India, attending both local and far-off patients from different states and localities. Due to this rich demographic variation, our single-center data contains a high degree of patient variation manifesting different sub-types of the disease. However, we acknowledge the limitations of single-center data in terms of limited variation in acquisition equipment and the number of radiologists involved. 
+
+Nonetheless, the methods developed in this thesis such as focused regions-of-interest, smoothing-based curriculum, multi-scale features, second-order feature attention, and global-local features, address some of the core challenges of ultrasound-based GBC detection, such as presence of acoustic shadow, echogenic textures, variability in appearance owing to non-regular anatomy. We do not expect our methods to show catastrophic failure in case of unseen data. In fact, we have recently accessed image data of 9 patients (6 benign, 3 malignant) from another tertiary care hospital in Northern India, and were able to run the inference on this data using the RadFormer model (state-of-the-art image-based technique) trained on our original dataset. RadFormer showed 100\% sensitivity (all 3 malignant cases detected correctly) and 83.3\% specificity (5 out of 6 benign cases detected correctly). Although this is a minimal dataset, the results are indicative of the generalization capability of the techniques to unseen data. 
+
+However, due to the acquisition shift owing to variation in ultrasound machines and operator variability, the outcomes derived from the current study may change with the diverse conditions encountered in multi-center healthcare environments, and result in performance drop. Consequently, caution should be exercised when extrapolating the results to a more extensive, varied population, emphasizing the need for future research encompassing multiple centers to enhance the reliability and generalizability of our conclusions.
+
+We have \rev{modified the Section 9.1 (Limitation) at Pg 135--136, to include the above discussion} related to the scope of the work and the significance of the results.
+
+\rev{We have also addressed the repetition issue, and removed the repetitive texts} from the introductions of chapters 4--8. 
+
+\mypara{Some very minor grammar errors at pages -- 38, 69, 72, 83, 112, 114.}
+%
+We sincerely thank the examiner for pointing out these grammar issues and helping to improve the thesis. We have corrected the following grammar issues mentioned by the examiner:  
+\begin{enumerate}
+\itemsep-0.1em 
+    \item[] Pg 38 (currently 40): If any of the ROIs is classified as malignant, the image as \st{the} \textbf{a} whole is classified as malignant.
+    \item[] Pg 69 (71): using \st{an} \textbf{a} weakly supervised object detection technique
+    \item[] Pg 72 (74): The DETR [36] \st{architectures utilize} architecture utilizes a ResNet
+    \item[] Pg 83 (84): there \st{is} \textbf{are} only a handful of studies that explore AI-based GBC detection.
+    \item[] Pg 112 (114): \st{In contrast, we adopt a simple strategy, FocusMAE, in sampling effective masks in the MAE pipeline.} \\
+    In contrast, we adopt a simple strategy called FocusMAE to effectively mask the high-information patches in the input to learn better disease representation. 
+    \item[] Pg 114 (116): GBC often occupies a very \st{humble} \textbf{small} portion of the frames
+\end{enumerate}
+
+\mypara{As mentioned these comments are minor in nature and can be easily addressed in the final version.}
+%
+We wholeheartedly thank the examiner for providing comments and suggestions to improve the clarity of the thesis. We have addressed all the comments in the final version, and we appreciate the examiner's effort in helping us enhance the quality of the thesis. Thank you. 
+
+\section*{Queries}
+
+\mypara{In chapter 4 -- Is data augmentation using rotation or other transformations done for this dataset? The operator variability may include different orientations and positioning. In view of this, the role of standard affine transformations can be important.}
+%
+Thanks for the question. Standard affine transforms are based on the principles of the optical camera images. Ultrasound principles differ from the optical cameras. We refrain from using the standard transformations like rotation and translation as they may create unrealistic images inconsistent with the ultrasound acquisition. This is also suggested in previous literature [163]. Rotations in captured ultrasound images may change the anatomical positioning information of the organs. Further, since the B-mode ultrasound captures a 2D slice of the 3D organs, rotating the probe would change the cutting plane, which is not modeled by the standard rotation transformation.
+
+\rev{We have added this clarification in Section 4.4.1, Pg. 45}.
+
+\vspace{0.5em}
+\noindent [163] Tirindelli et al. ``Rethinking ultrasound augmentation: A physics-inspired approach.'' MICCAI, pp. 690-700, 2021.
+
+\mypara{In chapter 7 -- It is not fully clear how the global attention is used to constrain the local attention(the figure indicates that the binarised mask is fed to the local region, but is the local network then trained only on the masked region is not fully clear).}
+%
+Yes, as shown in figures 7.1 and 7.2, the global attention region is used generate a cropped region-of-interest (ROI) from the original input image. The global attention heatmap is first binarized to identify the ROI portion, and then the ROI is cropped from the input image. This cropped region is fed to the local network as input. The local network is trained only on this region-of-interest (ROI) selected using the global attention. 
+
+\mypara{In chapter 8 -- The original training of the FocusMAE is on a reconstruction loss. The network is then fine-tuned for classification loss. The actual training of the FocusMAE for GBC is not discussed.}
+%
+We clarify that the training details discussed in Chapter 8 (Sections 8.3.3 and 8.5) are specifically in the context of our GBC data. Section 8.3.3 covers the pretraining setup including the loss function details of the FocusMAE pipeline. Section 8.5 provides the details of the pretraining and fine-tuning processes, including the necessary hyperparameters for GBC task. In our approach, we use the FocusMAE-based pretraining (using reconstruction loss) on the ViT encoder to enable it to learn disease representation for the downstream GBC classification task. Following this pretraining phase, the ViT network is fine-tuned for the GBC classification task using classification loss.
+
+\rev{We have now added a paragraph in Chapter 8 (Section 8.5, Pg 122--123)} which explicitly clarifies that the pretraining and fine-tuning settings described in Chapter 8 is in the context of the GBC detection. %We thank the examiner for this suggestion.
+
+\end{document}

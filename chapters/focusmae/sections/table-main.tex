@@ -1,0 +1,62 @@
+\begin{table}[t]
+	\centering
+    \footnotesize
+	%\resizebox{ \linewidth}{!}{%
+	\begin{tabular}{llcccc}
+		\toprule
+		{\textbf{Group}} & {\textbf{Method}} & {\textbf{Backbone}} & {\textbf{Acc.}} &  {\textbf{Spec.}} & {\textbf{Sens.}} \\
+        %& {\textbf{Time/Frame (ms)}}\\
+		\midrule
+		%
+        \multirow{2}{*}{Human Experts} 
+		& Radiologist A  & -- & 0.786$\pm$0.134 & 1.000$\pm$0.000 & 0.672$\pm$0.201 \\%& 21.54\\
+		%
+		& Radiologist B  & -- & 0.874$\pm$0.088 & 1.000$\pm$0.000 & 0.811$\pm$0.126 \\%& 74.58\\
+		\midrule
+		\multirow{10}{*}{Image-based} 
+		& ResNet50 \cite{resnet} & CNN & 0.711$\pm$0.091 & 0.822$\pm$0.102 & 0.672$\pm$0.147 \\%& 21.54\\
+		%
+		& InceptionV3 \cite{inception} & CNN & 0.734$\pm$0.089 & 0.953$\pm$0.072 & 0.647$\pm$0.107 \\%& 74.58\\
+		%
+        & Faster-RCNN \cite{fasterrcnn} & CNN & 0.757$\pm$0.058 & 0.687$\pm$0.056 & 0.808$\pm$0.091 \\%& 96.03\\
+		%
+		& EfficientDet \cite{efficientdet} & CNN & 0.789$\pm$0.084 & 0.761$\pm$0.099 & 0.828$\pm$0.061 \\%& 238.65\\
+		%
+        \cmidrule{2-6}
+        & ViT \cite{vit} & Transformer & 0.796$\pm$0.068 & 0.751$\pm$0.128 & 0.820$\pm$0.076 \\%& 24.62\\
+		%
+		& DEIT \cite{touvron2021training} & Transformer & 0.829$\pm$0.034  & 0.787$\pm$0.154 & 0.845$\pm$0.058 \\%& 23.52\\
+		%
+		& PVTv2 \cite{wang2021pvtv2} & Transformer & 0.831$\pm$0.041 & 0.857$\pm$0.167 & 0.834$\pm$0.068  \\%& 32.77\\
+        \cmidrule{2-6}
+        & GBCNet \cite{basu2022surpassing} & CNN & 0.840$\pm$0.105 & 0.843$\pm$0.204 & 0.843$\pm$0.072 \\%& 24.62 \\
+		%
+		& US-UCL \cite{basu2022unsupervised} & CNN & 0.808$\pm$0.127 & 0.871$\pm$0.217 & 0.776$\pm$0.109 \\%& 21.54 \\
+        %& Weakly_DETR \cite{basu2022unsupervised} & CNN & 0.808$\pm$0.127 & 0.871$\pm$0.217 & 0.776$\pm$0.109 \\
+		%
+		& RadFormer (SOTA) \cite{basu2023radformer} & Transformer & 0.840$\pm$0.105 & 0.776$\pm$0.162 & 0.877$\pm$0.088 \\%& 32.77 \\
+		%
+		\midrule
+		\multirow{5}{*}{Video-based} 
+        %& ViViT \cite{vivit} & Transformer & $\pm$ & $\pm$ & $\pm$ & \\
+		%
+        & Video-Swin \cite{videoswin} & Transformer & 0.925$\pm$0.053 & \textbf{1.000$\pm$0.000} & 0.903$\pm$0.085 \\%&  \\
+		%
+        & TimeSformer \cite{timesformer} & Transformer & 0.920$\pm$0.058 & 0.967$\pm$0.067 & 0.909$\pm$0.058 \\%&  \\
+        %
+        & VidTr \cite{vidtr} & Transformer & 0.924$\pm$0.038 & \textbf{1.000$\pm$0.000} & 0.800$\pm$0.072 \\%& \\
+		%
+		& VideoMAEv2 \cite{videomaev2} & Transformer & 0.942$\pm$0.066 & 0.937$\pm$0.078 & 0.940$\pm$0.120 \\%&  \\
+		%
+		& AdaMAE \cite{adamae} & Transformer & 0.947$\pm$0.053 & 0.952$\pm$0.066 & 0.913$\pm$0.116 \\%& \\
+		%
+		\cmidrule{2-6}%[1.5pt]
+		& \focusmae (Ours) & Transformer & \textbf{0.964$\pm$0.072} & 0.940$\pm$0.120 & \textbf{1.000$\pm$0.000} \\%& \\
+		\bottomrule
+	\end{tabular}
+	%}
+	\caption[Comparison of SOTA and \focusmae for GBC detection]{The 5-fold cross-validation (Mean$\pm$SD) accuracy, specificity, and sensitivity of baselines and \focusmae in detecting GBC from the USG. \focusmae achieves the best accuracy and perfect sensitivity, which is much desired for GBC detection. We also report how the expert radiologists perform in detecting GBC from the video dataset. The radiologists were blinded from accessing any patient-related data or clinical/ histopathological findings. The radiologists classified each video using the Gallbladder Reporting and Data Standard (GB-RADS) \cite{gb-rads-paper}. Our model outperforms human radiologists in detecting GBC from USG videos. Recall that our ground truth labels are biopsy-proven. The performance of the expert radiologists in our study is comparable to literature \cite{gbc-lancet}. 
+    %We have also added the average time per frame during inference in milli-seconds (when run in a 32GB V100 GPU) to compare the speed of detection.
+    }
+	\label{tab:main}
+\end{table}

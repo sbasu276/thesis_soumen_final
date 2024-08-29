@@ -1,0 +1,221 @@
+\documentclass[12pt]{book}
+%\fontsize{11.4pt}{2cm}\selectfont
+% imports specifically for formatting purposes
+%\usepackage{mathptmx}
+\usepackage{times}
+\usepackage{caption}
+\captionsetup{font=footnotesize}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{3}
+%\setcounter{tocdepth}{3}
+
+%%\addtolength{\topmargin}{-45pt} %we cannot put this restriction
+
+\addtolength{\oddsidemargin}{10pt}
+\addtolength{\evensidemargin}{-65pt}
+\addtolength{\textwidth}{64pt}
+\setlength{\belowcaptionskip}{0.5cm}
+
+%%\addtolength{\textheight}{113pt} %we cannot put this restriction
+
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\fancyhf{}
+\fancyhead[LO,RE]{\bfseries \leftmark}
+\fancyhead[LE,RO]{\bfseries \thepage}
+\fancyhead[RE]{\bfseries\leftmark}
+\addtolength{\headheight}{14.6pt}
+
+% --------------------------------------------------------------------
+\usepackage{amsmath}
+%\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{subfloat}
+\usepackage{subcaption}
+\usepackage{url,paralist}
+\usepackage{subfiles}
+\usepackage{multirow,tabularx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{bbm}
+\usepackage{setspace}
+\usepackage[toc,page]{appendix}
+\usepackage{xspace}
+\usepackage{epsfig}
+\usepackage{physics}
+\usepackage[inline]{enumitem}
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{xcolor,soul}
+\usepackage{latexsym}
+\usepackage{stackengine} 
+
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+\usepackage{breakurl}
+
+\def\etal{{et.~al}\xspace}
+\def\sota{SOTA\xspace}
+\def\cnn{CNN\xspace}
+\def\cnns{CNNs\xspace}
+\def\dnn{DNN\xspace}
+\def\dnns{DNNs\xspace}
+\def\usg{USG\xspace}
+\def\us{US\xspace}
+\def\gbc{GBC\xspace}
+\def\gb{GB\xspace}
+\def\mri{MRI\xspace}
+\def\ct{CT\xspace}
+\def\roi{ROI\xspace}
+\def\rois{ROIs\xspace}
+\def\gbcnet{GBCNet\xspace}
+\def\mssop{MS-SOP\xspace}
+\def\radformer{RadFormer\xspace}
+\def\focusmae{FocusMAE\xspace}
+\def\wsod{WSOD\xspace}
+\def\mil{MIL\xspace}
+\def\detr{DETR\xspace}
+
+
+\newcommand{\myfirstpara}[1]{\noindent \textbf{#1:}}
+\newcommand{\mypara}[1]{\vspace{0.1em} \myfirstpara{#1}}
+
+\DeclareMathOperator*{\argmax}{argmax}
+
+\newcommand\oast{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\ast}{\bigcirc}}}
+
+\newcommand{\beginsupplement}{%
+        \setcounter{table}{0}
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \setcounter{figure}{0}
+        \renewcommand{\thefigure}{S\arabic{figure}}%
+     }
+
+
+% \usepackage[pdfpagemode={UseOutlines},bookmarks=true,bookmarksopen=true, pdfauthor={Your Name},pdfcreator={Your Name}, bookmarksopenlevel=0,bookmarksnumbered=true,hypertexnames=false, colorlinks,linkcolor={black},citecolor={blue},urlcolor={blue},  pdfstartview={FitV},unicode,breaklinks=true]{hyperref}
+% \hypersetup{breaklinks=true}
+
+\usepackage[pdfpagemode={UseOutlines},bookmarks=true,bookmarksopen=true, pdfauthor={Your Name},pdfcreator={Your Name}, bookmarksopenlevel=0,bookmarksnumbered=true,hypertexnames=false, colorlinks,linkcolor={black}, citecolor={black}, pdfstartview={FitV},unicode,breaklinks=true]{hyperref}
+\hypersetup{breaklinks=true}
+
+
+
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+\title{Deep Learning Models for Detecting Gallbladder Cancer from Ultrasound}
+\author{Soumen Basu}
+% \date{}
+
+\begin{document}
+
+%\doublespacing
+\pagestyle{empty}
+\cleardoublepage
+\singlespacing
+%\newpage \ \newpage
+%\onehalfspacing 
+%\newpage \ \newpage
+%------------------------------------------------------------------------- 
+\pagenumbering{gobble}
+\include{format/cover_page}
+
+%===================================================================================
+% Activate the copyright page after viva
+\cleardoublepage
+\include{format/copyright}
+%===================================================================================
+
+\cleardoublepage
+\include{format/inner_cover_page}
+\cleardoublepage
+\pagenumbering{roman}
+\include{format/certificate}
+\cleardoublepage
+\include{format/acknowledge}
+
+
+\normalfont
+\singlespacing
+\include{chapters/abstract}
+
+
+\cleardoublepage
+\pagestyle{fancy}
+\singlespacing
+\tableofcontents
+
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{\listfigurename}
+\singlespacing
+\listoffigures
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{\listtablename}
+\singlespacing
+\listoftables
+
+
+\newpage \ \newpage
+\pagestyle{plain}
+
+
+\pagenumbering{arabic}
+\pagestyle{plain}
+\pagestyle{fancy}
+\singlespacing
+\onehalfspacing
+
+%\hypersetup{linkcolor={red}}
+
+\input{chapters/introduction}
+
+\input{chapters/usg}
+
+\input{chapters/data}
+
+\input{chapters/gbcnet}
+
+\input{chapters/limited}
+
+\input{chapters/radformer}
+
+\input{chapters/focusmae}
+
+\input{chapters/conclusion}
+
+\pagestyle{fancy}
+\cleardoublepage
+%------------------------------------------------------------------------- 
+\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+
+%\cleardoublepage
+\clearpage
+{\small
+\Urlmuskip=0mu plus 1mu\relax
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{plain} 
+\bibliography{reference}
+}
+%\cleardoublepage
+\pagestyle{plain}
+%\doublespacing
+\cleardoublepage
+\include{format/pub}
+\cleardoublepage
+%\onehalfspacing
+\include{format/bio}
+\cleardoublepage
+\pagestyle{plain}
+
+\end{document}

@@ -1,0 +1,35 @@
+
+\section{Related Work}
+
+\myfirstpara{Deep Learning for GB Abnormalities}
+%
+\usg imaging is an effective modality for diagnosing \gbc and related \gb afflictions \cite{yuan2018gbcManual}. 
+%Recently, deep learning has been used as a diagnostic tool in medical imaging to great effect \cite{litjens2017dlmedical}. 
+%Multiple studies have shown the application of these techniques on GB-related ailments, such as the detection of GB stones, biliary artesia, cholecystitis, and polyps. 
+Lien \etal \cite{gbAutomatic} use a parameter-adaptive pulse-coupled neural network for \gb stone segmentation in \usg images. Pang \etal \cite{gbYolo} identify \gb and gallstones using a YOLOv3 model from \ct images. %Chen \etal \cite{gbPolyp} suggest an approach that segments the GB region followed by an AdaBoost classifier for diagnosing polyps. 
+Jeong \etal \cite{gbPolyp2} uses an InceptionV3 model to classify neoplastic polyps from cropped samples of \gb \usg images. \gbc is a serious problem affecting a significant number of people. Despite the presence of numerous studies on using deep learning on other \gb-related afflictions, there is an absence of any work that applies deep learning to \gbc detection.
+
+\mypara{Deep Learning for USG}
+%
+\cnn models have been widely applied in a plethora of \usg-based imaging tasks.
+Mishra \etal proposed a fully convolutional neural network with deep attentional supervision on USG images for segmentation of blood vessel, liver lumen, and lesion \cite{mishra2018USSegmentation}. Deep learning-based segmentation models such as U-Net or Link-Net have been used to measure head circumference in fetal USG images \cite{budd2019FetalHC, sobhaninia2019FetalHC}. %VGG16-based architectures have been used for detecting the fetal scan plane \cite{baumgartner2017PlaneDetection}. 
+Azizi \etal proposed a Deep Belief Network for detecting prostate cancer from USG images \cite{azizi2015ultrasound}. Li \etal modified Faster-RCNN for improving the detection of papillary thyroid cancer from USG \cite{li2018improved}. Deep learning has also been used in ovarian cancer \cite{zhang2019improved}, metastatic lymph node \cite{lee2018deep}, and breast cancer detection \cite{almajalid2018development, becker2018classification, cao2019BreastLesion, yap2018breast}. Zhu \etal recently proposed an attention-guided second-order sub-region pooling network for exploiting higher-order correlation to extract complex features from USG images \cite{zhu2020second}. A study by Ning \etal implemented a multi-scale higher-order pooling-based solution for breast lesion classification on USG images \cite{ning2020multi} .
+%\cnn models have been widely applied in \usg imaging tasks, such as ovarian cancer detection \cite{zhang2019improved}, breast cancer region, mass and boundary detection \cite{bian2017boundary, cao2019BreastLesion, yap2018breast, ning2020multi, zhu2020second}, measuring head circumference in fetal \usg images \cite{sobhaninia2019FetalHC, budd2019FetalHC}. %, and other medical imaging and diagnostic applications. 
+
+%\cite{mishra2018USSegmentation} proposed a fully convolutional neural network with deep attentional supervision on USG images for segmentation of blood vessel, liver lumen, and lesion. Deep learning-based segmentation models such as U-Net or Link-Net have been used to measure head circumference in fetal USG images \cite{sobhaninia2019FetalHC, budd2019FetalHC}. VGG16-based architectures have been used for detecting the fetal scan plane \cite{baumgartner2017PlaneDetection}. \cite{azizi2015ultrasound} proposed a Deep Belief Network for detecting prostate cancer from USG images. \cite{li2018improved} suggested modifications to Faster-RCNN for improving the detection of papillary thyroid cancer from USG. Deep learning has been used in ovarian cancer \cite{zhang2019improved}, metastatic lymph node \cite{lee2018deep}, and breast cancer detection \cite{cao2019BreastLesion, yap2018breast, almajalid2018development, becker2018classification}. \cite{zhu2020second} suggested an attention-guided second-order sub-region pooling network for exploiting higher-order correlation to extract complex features from USG images. A study by \cite{ning2020multi} proposes a multi-scale higher-order pooling-based solution for breast lesion classification on USG images. \cite{wang2020auto} used reinforcement learning to auto-assign weights to multimodal USG framework. 
+
+\mypara{Curriculum Learning}
+%
+Curriculum learning has been applied to different medical imaging tasks. While Jesson \etal \cite{jesson2017cased} used a patch-based curriculum for lung nodule detection, Tang \etal \cite{tang2018attention} used disease severity level to identify thoracic diseases from chest radiographs. Oksuz \etal \cite{oksuz2019automatic} proposed image corruption-based curriculum to detect motion artifacts in cardiac \mri. 
+
+\mypara{Texture Bias in Neural Networks}
+%
+Presence of mass and a thickened \gb wall are prominent indicators of \gb abnormality. However, typical \cnn-based architectures are biased towards textures rather than shape \cite{geirhos2018Texture}. This may lead GBCNet to focus on soft tissue textures such as liver rather than noticing cues based on the shape and wall of the \gb. 
+%Therefore, a strategy is needed to reduce this texture bias of the network. 
+Multiple works have attempted to reduce texture bias and improve the spatial understanding of a model. Geirhos \etal \cite{geirhos2018Texture} suggest style transfer to replace the original texture of images while Brendel \etal \cite{brendel2019BagOfFeatures} propose a method similar to a Bag of Features model to force spatial learning. 
+
+\mypara{Visual Acuity in Learning Models}
+%
+Vogelsang \etal \cite{vogelsang2018VisualAcuity} suggest that a period of low visual acuity (blurred vision) followed by high visual acuity induces better spatial processing and also increases the receptive field in human vision. 
+%Some recent works seem to follow the broad strategy and overcome the texture bias problem using blurring or similar other operations. 
+Different from our visual acuity-inspired strategy of working with input space, Sinha \etal \cite{sinha2020curriculumBySmoothing} propose applying a Gaussian kernel on the output feature map of every layer of a network. The use of blurring before pooling seems to mitigate aliasing effects due to sub-sampling in the pooling layer rather than the use of visual acuity. Azad \etal \cite{azad2020textureDoG} have integrated a Difference of Gaussian (DoG) operation into their model. Similar to \cite{sinha2020curriculumBySmoothing}, they end up attenuating the high frequency in the feature maps corresponding to every layer rather than the input image, for which there is no obvious biological connection known. On the other hand, our proposed visual acuity-based curriculum works in the input space and has a solid neural basis \cite{vogelsang2018VisualAcuity}.

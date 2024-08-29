@@ -1,0 +1,65 @@
+\chapter{Developing an Accurate GBC Detector}
+%
+\label{chap:gbcnet}
+%
+In this chapter, we systematically explore the potential of Deep Convolution Neural Network (CNN) models for accurately detecting Gallbladder Cancer (GBC) from Ultrasound (USG) images. As outlined in \cref{chap:intro}, USG is the predominant diagnostic modality for gallbladder (GB) diseases due to its affordability and accessibility. However, the analysis of USG images for GBC detection presents challenges such as low image quality, noise, and varying viewpoints resulting from the handheld nature of the sensor. To address these challenges, we introduce GBCNet and a curriculum tailored to enhance GBC detection performance from USG. We present a comprehensive discussion on GBCNet and the curriculum in this chapter.
+\par The contents of this chapter was published as the following paper:
+\par [1] \textit{Soumen Basu, Mayank Gupta, Pratyaksha Rana, Pankaj Gupta, and Chetan Arora. ``Surpassing the human accuracy: detecting gallbladder cancer from USG images with curriculum learning.'' In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR), pp. 20886-20896, 2022}.
+
+\section{Introduction}
+%
+Gallbladder cancer (GBC) is characterized by its aggressive nature, progressing rapidly if left untreated. Often, the disease advances silently, with malignancy extending into the neighboring liver and subsequently spreading to distant organs (called metastasis). Early diagnosis and resection are critical for improving the survival rate of \gbc. USG, on the other hand, stands out as the predominant diagnostic imaging modality for investigating patients with suspected gallbladder ailments \cite{klibanov2015ultrasound}, making it an excellent candidate modality for early detection of GBC. The advantages of USG include its affordability, accessibility, absence of ionizing radiation, and portability. Particularly in low-resource countries, the access to CT or MRI is limited due to high costs and their availability is also restricted to a few selected care centers. USG proves to be an invaluable diagnostic tool for early detection and intervention to GBC in such low-resource settings.
+
+\par While identifying anomalies like stones or thickening of the GB wall during routine ultrasound (USG) is straightforward, precise characterization wall thickening remains challenging for even the most experienced radiologists \cite{gbc-lancet, gb-rads-paper, gupta2020imaging}. Although GBC typically presents with irregular wall thickening, early stages may exhibit smooth and symmetric thickening, which is similar to benign conditions \cite{gupta2020imaging}. As discussed earlier in \cref{sec:clinical}, traditional signs of benign thickening, such as echo-layering, can be present in malignant cases, complicating diagnosis. Moreover, various other medical conditions, including acute cholecystitis and hepatic, renal, and heart issues, can also cause gallbladder wall thickening, further complicating differentiation between benign and malignant causes. Frequently, USG is the only diagnostic imaging conducted for patients with suspected GB ailments. In cases where malignancy is not suspected, further testing is typically omitted, potentially allowing GBC to progress silently. Hence, there is an imperative need to develop effective characterization for GB malignancy from USG images. In pursuit of this objective, we turn to automated deep convolutional neural network (CNN)-based methods for gallbladder cancer (GBC) detection. Recent advancements in CNN-based machine learning (ML) models have yielded transformative progress in radiology and the diagnosis of various diseases, including breast cancer, lung cancer, pancreatic cancer, and melanoma \cite{ardila2019end, bejnordi2017diagnostic, chu2019application, codella2017deep, han2017breast}. However, the utilization of such models for GBC detection is notably absent. While prior efforts have focused on the segmentation and detection of GB abnormalities such as stones and polyps \cite{gbPolyp, gbPolyp2, gbAutomatic}, the specific detection of GBC from USG has not been attempted in prior literature.
+
+\par However, there are significant challenges in using \cnn models for accurately detecting GBC from \usg image as discussed in \cref{sec:challenges}. %Unlike \mri or \ct, \usg images suffer from low imaging quality due to noise and other sensor artifacts such as acoustic shadow and echogenic textures as discussed in \Cref{sec:usg_artifact_issue}. The views are also not aligned due to the handheld nature of the sensor. 
+Our study of state-of-the-art (\sota) CNN-based image classification techniques reveal that they often fail to learn the salient \gb region due to the presence of shadows, which may have similar visual traits of a \gb in \usg images (\cref{fig:teaser}). In addition to shadows, \gbc detection also gets biased towards learning from spurious textures due to noise and adjacent organ tissues rather than the shape or boundary of \gb wall, which impedes the accurate detection of GBC and results in poor GBC detection by off-the-shelf CNN models. Further, unlike normal and benign \gb regions, which have regular anatomy, malignant cases are much harder to detect precisely due to the absence of a clear \gb boundary or shape and the presence of a mass. %The lack of annotated dataset adds to the challenge of training the CNN models.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figs/gbcnet/teaser.png}
+    \caption[Depiction of issues with USG-based GBC detection]{(a), (b), and (c) Normal, benign, and malignant \gb sample in \usg images, respectively. While normal or benign \gb have regular anatomy, clear boundary is absent in malignant \gb. (d) A malignant (biopsy-proven) \gb sample. (e) Shadows having visual traits of a \gb leads to localization error in ResNet50. (f) \gbcnet tackles shadow artifacts well. (g) Another sample of malignant \gb. (h) The radiologist incorrectly diagnosed the \gb as benign based on the stone and wall thickening. (i) \gbcnet helps the radiologist to identify the salient region with liver infiltration by the \gb, a critical feature of \gbc, and correct the prediction.}
+    \label{fig:teaser}
+\end{figure}
+
+\par In addressing this gap, we present the following significant contributions aimed at achieving highly accurate gallbladder cancer (GBC) detection from ultrasound (USG). Our primary goal is to ensure that our model exhibits a high recall (sensitivity) in detecting GBC. This emphasis on high recall is crucial as false negatives, where malignant cases are incorrectly predicted as non-malignant, can have severe consequences for the patients. On the other hand, the false positive prediction of malignancy can impose significant clinical, financial, and emotional burdens on the patients. It is thus essential to ensure that the model also shows high specificity (true negative rate).
+
+%We propose GBCNet to tackle the challenges in our problem. GBCNet first extracts the regions of interest (\rois) by detecting the \gb (and not the cancer), and then uses a new multi-scale, second-order pooling architecture specializing in classifying \gbc. To effectively handle spurious textures, we propose a curriculum inspired by human visual acuity, which reduces the texture biases in GBCNet. Experimental results demonstrate that GBCNet significantly outperforms \sota \cnn models, as well as the expert radiologists. Our technical innovations are generic to other \usg image analysis tasks as well. Hence, as a validation, we also show the efficacy of GBCNet in detecting  breast cancer from \usg images. 
+%Project page with source code, trained models, and data is available at \url{https://gbc-iitd.github.io/gbcnet.html}
+\noindent \mypara{Contributions:}
+\begin{enumerate}%[label=\textbf{(\arabic*)}]
+	\item We focus on circumventing the challenges for automated detection of \gbc from \usg images and propose a deep neural network, GBCNet, for detecting \gbc from \usg images. GBCNet first extracts candidate regions of interest (\rois) by detecting the \gb (and not the cancer) from the \usg to mitigate the effects of shadows. Following the \roi detection, GBCNet employs a new  multi-scale, second-order pooling-based (MS-SoP) classifier on the \rois to classify gallbladder malignancy. MS-SoP encodes rich feature representations for malignancy detection. Experimental results demonstrate that GBCNet significantly outperforms multiple \sota \cnn models, as well as the expert radiologists. 
+	%
+	\item Even though GBCNet shows improvement in \gb malignancy detection over the \sota models, the spurious texture present in an \roi bias the classification unit towards generating false positives. To alleviate the issue, we propose a training curriculum inspired by human visual acuity \cite{kwon2016compensation, vogelsang2018VisualAcuity}. Visual acuity refers to the sharpness of visual stimuli. Studies suggest that an initial period of low visual acuity followed by high visual acuity helps the visual cortex in humans to formulate a better receptive field and emphasizes features such as shape or structure while identifying objects. 
+	The proposed curriculum mitigates texture bias and helps GBCNet focus on shape features important for accurate \gbc detection from \usg images. % We validate the same in the context of \gbc detection from \usg images. %only, where we show in our experiment that our model after training with the proposed curriculum better focuses on GB boundaries.
+	%
+	\item A lack of publicly available \usg image datasets related to \gb malignancy adds to the difficulty of utilizing \cnn models for detecting \gbc. As discussed in \Cref{chap:data}, we have collected, annotated, and curated a \usg image dataset of 1255 abdominal \usg images. The dataset is referred as the Gallbladder Cancer Ultrasound (GBCU) dataset, and was publicly released with this work.
+	%The dataset is available to the community.
+	%post-acceptance of the paper after signing the necessary privacy agreement with our hospital. 	
+\end{enumerate}
+
+
+%\input{chapters/gbcnet/sections/intro}
+%
+\input{chapters/gbcnet/sections/related-work}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{figs/gbcnet/arch-compact.jpg}
+	\caption[Architecture of GBCNet]{Overview of the \gbcnet architecture. The region selection network localizes the candidate regions of interest and the multi-scale, second-order pooling-based (MS-SoP) classifier at the next stage predicts malignancy for each region. The predictions for each region is aggregated to get the final prediction on the whole image.}
+	\label{fig-arch-overview}
+\end{figure}
+
+\input{chapters/gbcnet/sections/method}
+\input{chapters/gbcnet/sections/method-ms-sop}
+\input{chapters/gbcnet/sections/method-visual-acuity}
+%\input{chapters/gbcnet/sections/dataset}
+
+%results table, pasted here for formatting reasons
+\input{chapters/gbcnet/sections/implementation}
+
+\input{chapters/gbcnet/sections/table_main.tex}
+
+\input{chapters/gbcnet/sections/results}
+\input{chapters/gbcnet/sections/conclusion}
+%\input{chapters/gbcnet/sections/supple}

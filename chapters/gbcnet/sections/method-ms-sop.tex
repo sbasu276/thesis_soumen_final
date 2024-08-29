@@ -1,0 +1,50 @@
+\myfirstpara{Multi-Scale Block}
+%
+Abdominal organs can appear in significantly different sizes in a \usg image based on the insonation angle or the pressure on the transducer. Perceiving information across multiple scales is thus necessary for accurate \gbc detection. Recently, Gao \etal \cite{res2net} have replaced the standard convolution block in the bottleneck layer with group convolution to add a multi-scale capability to the ResNet architecture. Inspired by \cite{res2net}, we used a hierarchy of convolution kernels on slices of feature volumes in the intermediate layers to capture multi-scale information through a combination of different receptive fields. We split a feature map volume, $\mathcal{X} \!\in\!\mathbb{R}^{H\!\times\! W \!\times\! D}$ ($H, W ~\text{and}~D$ are the height, width, and the number of channels, respectively), depth-wise into 4 slices, $\mathcal{X}_1,\mathcal{X}_2,\mathcal{X}_3$, and $\mathcal{X}_4$, where $\mathcal{X}_i \!\in\! \mathbb{R}^{H\!\times\! W\!\times\! D/4}$. Each $\mathcal{X}_i$ will generate an output split $\mathcal{Y}_i$. The final output, $\mathcal{Y}$, is obtained by concatenating the splits. Suppose $\mathcal{C}_j$ are $3\!\times\!3$ convolution kernels and $\oast$ denotes the convolution. We get each $\mathcal{Y}_i$ as follows:
+\linebreak
+\begin{minipage}{.4\linewidth}
+\vspace{-1em}
+\begin{align}
+    \mathcal{Y}_1 &= \mathcal{X}_1 \\
+    \mathcal{Y}_2 &= \mathcal{C}_1 \oast \mathcal{X}_2
+\end{align}
+\end{minipage}
+\begin{minipage}{.6\linewidth}
+\vspace{-1em}
+\begin{align}
+    \mathcal{Y}_3 &= \mathcal{C}_2 \oast (\mathcal{X}_3 \!+\! \mathcal{Y}_2) \\
+    \mathcal{Y}_4 &= \mathcal{C}_3 \oast (\mathcal{X}_4 \!+\! \mathcal{Y}_3)
+\end{align}
+\end{minipage}
+
+\mypara{Second-order Pooling Block}
+%
+Traditional average or max-pooling use first-order statistics and thus cannot capture the higher-order statistical relation between features. Inspired by the recent success of higher-order statistics in breast lesion \usg \cite{ning2020multi, zhu2020second}, we employ the second-order pooling (SoP) mechanism to exploit the second-order statistical dependency between the multi-scale features.  
+
+For computational efficiency, we reduce the number of channels of a feature volume, $\mathcal{X} \!\in\! \mathbb{R}^{H \!\times\! W \!\times\! D}$, to $D'~(D'\!<\!D)$, using $1\!\times\!1$ convolutions. $\mathcal{X}$ is then reshaped to a matrix $\vb{X} \!\in\! \mathbb{R}^{D'\!\times\! N}$, where $N\!=\!H\!\times\! W$. We compute the covariance of $\vb{X}$ as, $\vb{C}_{D'\!\times\!D'} \!=\! (\vb{X\!-\!\bar{X}})\vb{(X\!-\!\bar{X})^T}$, which is then reshaped to a tensor of size $1 \!\times\! D' \!\times\! D'$ and passed through a convolution layer with $4D'$ kernels of size $1 \!\times\! D'$ each. We resize the resulting $1\!\times\! 1 \!\times\! 4D'$ tensor to a $1\!\times\! 1 \!\times\! D$ tensor, $\vb{w_d}$, by $1\!\times\! 1$ convolutions. $\vb{w_d}$ represents the weight for each channel. These weights are then channel-wise multiplied with $\mathcal{X}$, to obtain the weighted feature map $\vb{Z_d}$. To repeat similar processes for the height and width, we transpose $\mathcal{X}$ from to a $D \!\times\! W \!\times\! H$ tensor, say $\mathcal{X}_h$ and to a $H \!\times\! D \!\times\! W$ tensor, say $\mathcal{X}_w$. In terms of index notation, $\mathcal{X}_h[k,j,i] \!=\! \mathcal{X}[i,j,k]$ and $\mathcal{X}_w[i,k,j] \!=\! \mathcal{X}[i,j,k]$, where $i\!=\!\{1,2,\ldots H\}, ~j\!=\!\{1,2,\ldots W\},$ and $k\!=\!\{1,2,\ldots D\}$. Similar to calculating $\vb{w_h}$ from $\mathcal{X}$, we find $\vb{w_h}\!\in\! \mathbb{R}^{1\!\times\!1\!\times\!H}$ from $\mathcal{X}_h$, and $\vb{w_w}\!\in\! \mathbb{R}^{1\!\times\!1\!\times\!W}$ from $\mathcal{X}_w$. We also calculate $\vb{Z_h}$ and $\vb{Z_w}$ by multiplying $\vb{w_h}$ and $\vb{w_w}$ channel-wise to $\mathcal{X}_h$ and $\mathcal{X}_w$. Then, we transpose $\vb{Z_h}$ and $\vb{Z_w}$ to tensors of size $H\!\times\! W \!\times\! D$, say $\vb{Z_h}^T$ and $\vb{Z_w}^T$, respectively, where $\vb{Z_h}^T[i,j,k] = \vb{Z_h}[k,j,i]$ and $\vb{Z_w}^T[i,j,k] = \vb{Z_w}[i,k,j]$. Finally, we obtain the output feature tensor, $\vb{Z} \!\in\! \mathbb{R}^{H\!\times\! W \!\times\! D}$ by adding $\vb{Z_d}, \vb{Z_h}^T,$ and $\vb{Z_w}^T$. 
+\vspace{-0.5em}
+\begin{align}
+    \vb{Z_d}[i,j,k] &= \vb{w_d}[k] ~~ \mathcal{X}[i,j,k] \\
+    \vb{Z_h}[k,j,i] &= \vb{w_h}[i] ~~ \mathcal{X}_h[k,j,i]  \\
+    \vb{Z_w}[i,k,j] &= \vb{w_w}[j] ~~ \mathcal{X}_w[i,k,j]  \\
+    \vb{Z}[i,j,k] &= \vb{Z_d}[i,j,k] + \vb{Z_h}^T[i,j,k] + \vb{Z_w}^T[i,j,k]
+\end{align}
+\vspace{-1em}
+% The input feature volume, $\mathcal{X} \!\in\! \mathbb{R}^{H \!\times\! W \!\times\! D}$, where $H, W, \text{and}~D$ are the spatial height, width, and the number of channels. We reduce the number of channels to $D'~(D'<D)$, using $1\!\times\! 1$ convolutions to reduce computational cost. Thus, the feature tensor becomes $\mathcal{X} \!\in\! \mathbb{R}^{H \!\times\! W \!\times\! D'}$. Now, we reshape the feature tensor, $\mathcal{X}$, to a matrix $\vb{X} \!\in\! \mathbb{R}^{D'\!\times\! N}$, where $N=H\!\times\! W$. Adapting from \cite{li2017second}, we compute the sample covariance, $\vb{C} \!\in\! \mathbb{R}^{D' \!\times\! D'}$, of the feature matrix $\vb{X}$ (consisting of $N$ samples, each of dimension $D'$), as 
+% \begin{align}
+%     % c_{ij} &= \frac{1}{N-1} \sum\limits_{i=1}^N{(\vb{x_i} - \vb{\mu})(\vb{x_i}-\vb{\mu})^T}
+%     \vb{C} = \vb{X}\vb{J}\vb{X^T}~,~~ \vb{J} = \frac{1}{N} \big[\vb{I_N} - \frac{1}{N} \vb{11^T} \big]
+% \end{align}
+% where $\vb{I_N}$ is an $N \!\times\! N$ identity matrix, $\vb{1} = [1,\ldots,1]^T$ is a $N$-dimension vector with all elements being one, and $T$ is the matrix transpose. 
+
+% The $D'\!\times\! D'$ sized covariance matrix is then reshaped to a 3D tensor of size $1 \!\times\! D' \!\times\! D'$ and passed through a convolution layer with $4D'$ kernels of size $1 \!\times\! D'$ each. In other words, the convolution layer has $D'$ in-channels and $4D'$ out-channels. The resulting $1\!\times\! 1 \!\times\! 4D'$ tensor is resized to $1\!\times\! 1 \!\times\! D$ by $1\!\times\! 1$ convolution. This $1\!\times\! 1 \!\times\! D$ tensor, say $\vb{w_d}$, represents the weight for each channel/feature-map. These weights are then channel-wise multiplied with the original feature map, $\mathcal{X}$, to obtain the weighted feature map $\vb{Z_d}$, which is a $H \!\times\! W \!\times\! D$ tensor. 
+
+% We repeat a similar process for the height and width as well. For this we transpose the feature map $\mathcal{X}$ from $H \!\times\! W \!\times\! D$ to a $D \!\times\! W \!\times\! H$ tensor, say $\mathcal{X}_h$ and to a $H \!\times\! D \!\times\! W$ tensor, say $\mathcal{X}_w$. We use the indices $i,j,$ and $k$ to express the 3-dimensional tensors where $i=\{1,2,\ldots H\}, j=\{1,2,\ldots W\},$ and $k=\{1,2,\ldots D\}$. Using the index notation, $\mathcal{X}_h[k,j,i] = \mathcal{X}[i,j,k]$ and $\mathcal{X}_w[i,k,j] = \mathcal{X}[i,j,k]$.
+% The process mentioned above for the dimension D of $\mathcal{X}$ is similarly followed for dimension H of $\mathcal{X}_h$, to obtain the per channel/feature-map weights $\vb{w_h} \!\in\! \mathbb{R}^{1\!\times\! 1 \!\times\! H}$, and multiply them to $\mathcal{X}_h$ to obtain $\vb{Z_h} \!\in\! \mathbb{R}^{D\!\times\! W \!\times\! H}$. The same process is repeated for dimension W of $\mathcal{X}_w$ to get $\vb{w_w} \!\in\! \mathbb{R}^{1\!\times\! 1 \!\times\! W}$, and $\vb{Z_w} \!\in\! \mathbb{R}^{H\!\times\! D \!\times\! W}$. 
+% Then, we transpose $\vb{Z_h}$ and $\vb{Z_w}$ to tensors of size $H\!\times\! W \!\times\! D$, say $\vb{Z_h}^T$ and $\vb{Z_w}^T$, respectively, where $\vb{Z_h}^T[i,j,k] = \vb{Z_h}[k,j,i]$ and $\vb{Z_w}^T[i,j,k] = \vb{Z_w}[i,k,j]$. Finally, we obtain the output feature tensor, $\vb{Z} \in \mathbb{R}^{H\!\times\! W \!\times\! D}$ by adding $\vb{Z_d}, \vb{Z_h}^T,$ and $\vb{Z_w}^T$. 
+% \begin{align}
+%     \vb{Z_d}[i,j,k] &= \vb{w_d}[k] ~~ \mathcal{X}[i,j,k] \\
+%     \vb{Z_h}[k,j,i] &= \vb{w_h}[i] ~~ \mathcal{X}_h[k,j,i]  \\
+%     \vb{Z_w}[i,k,j] &= \vb{w_w}[j] ~~ \mathcal{X}_w[i,k,j]  \\
+%     \vb{Z}[i,j,k] &= \vb{Z_d}[i,j,k] + \vb{Z_h}^T[i,j,k] + \vb{Z_w}^T[i,j,k]
+% \end{align}

@@ -1,0 +1,44 @@
+\begin{table}[!t]
+    \footnotesize
+	\centering
+	%\resizebox{ \linewidth}{!}{%
+	\begin{tabular}{llccc}
+		\toprule
+		{\textbf{Group}} & {\textbf{Method}} & {\textbf{Acc.}} &  {\textbf{Spec.}} & {\textbf{Sens.}} \\
+		\midrule
+		%
+		\multirow{5}{*}{Image-based} 
+		& ResNet50 \cite{resnet} & 0.721 & 0.739 & 0.711 \\
+		%
+		& InceptionV3 \cite{inception} & 0.672 & 0.739 & 0.632 \\
+        %
+        %& USG-UCL \cite{basu2022unsupervised} & 0.802 & 0.869 & 0.763\\
+		%
+        \cmidrule{2-5}
+        & ViT \cite{vit} & 0.770 & 0.783 & 0.763 \\
+		%
+		& DEIT \cite{touvron2021training} & 0.770 & 0.696 & 0.816 \\
+		%
+		\midrule
+		\multirow{3}{*}{Video-based} 
+        %& ViViT \cite{vivit} & Transformer & & & \\
+		%
+        %& Video-Swin \cite{videoswin} & 0.820 & 0.695 & 0.894 \\
+		%
+        & TimeSformer \cite{timesformer} & 0.787 & 0.739 & 0.816 \\
+        %
+        %& VidTr \cite{vidtr} & 0.443 & 0.826 & 0.210 \\
+		%
+		& VideoMAE \cite{videomae} & 0.852 & 0.956 & 0.789 \\
+		%
+		%& AdaMAE \cite{adamae} & & & \\
+		%
+		\cmidrule{2-5}
+		& FocusMAE (Ours) & 0.885 & 0.895 & 0.869 \\
+		\bottomrule
+	\end{tabular}
+	%}
+	\caption[Comparison of SOTA and \focusmae for Covid detection]{The performance comparison in terms of accuracy, specificity, and sensitivity of baselines and \focusmae for detecting COVID from CT \cite{covidctmd}. CT-slices are analogous to the video frames, and thus, video-based detection methods are applicable to CT modality as well. Our proposed method consistently outperforms the SOTA baselines on the COVID detection task, establishing the generality and applicability of our method across two different medical imaging modalities - USG and CT. }
+	\label{tab:covid}
+\end{table}
+

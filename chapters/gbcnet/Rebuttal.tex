@@ -1,0 +1,139 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[rebuttal]{cvpr}
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage[dvipsnames]{xcolor}
+%\usepackage[belowskip=0pt,aboveskip=5pt]{caption}
+\setlength{\textfloatsep}{10pt}
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks,bookmarks=false]{hyperref}
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+% If you wish to avoid re-using figure, table, and equation numbers from
+% the main paper, please uncomment the following and change the numbers
+% appropriately.
+%\setcounter{figure}{2}
+%\setcounter{table}{1}
+%\setcounter{equation}{2}
+
+% If you wish to avoid re-using reference numbers from the main paper,
+% please uncomment the following and change the counter for `enumiv' to
+% the number of references you have in the main paper (here, 6).
+%\let\oldthebibliography=\thebibliography
+%\let\oldendthebibliography=\endthebibliography
+%\renewenvironment{thebibliography}[1]{%
+%     \oldthebibliography{#1}%
+%     \setcounter{enumiv}{6}%
+%}{\oldendthebibliography}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{8360} % *** Enter the CVPR Paper ID here
+\def\confName{CVPR}
+\def\confYear{2022}
+
+\newcommand{\ra}{\textcolor{Periwinkle}{R1}}
+\newcommand{\rb}{\textcolor{PineGreen}{R2}}
+\newcommand{\rc}{\textcolor{YellowGreen}{R3}}
+
+\newcommand{\myfirstpara}[1]{\noindent \textbf{\textit{#1:}}}
+\newcommand{\mypara}[1]{\vspace{0.1em} \myfirstpara{#1}}
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+%\title{Surpassing the Human Accuracy: \\ Detecting Gallbladder Cancer from USG Images with Curriculum Learning}  % **** Enter the paper title here
+
+\title{Detecting Gallbladder Cancer from USG Images with Curriculum Learning}  % **** Enter the paper title here
+
+\maketitle
+\thispagestyle{empty}
+\appendix
+
+%%%%%%%%% BODY TEXT - ENTER YOUR RESPONSE BELOW
+We thank the reviewers for their detailed feedback. We are motivated that they have recognized the importance and significance of GBC detection problem, and found novelty in our work. A concern has been raised regarding the IRB clearance, since our study involves human subjects. We clarify that all ethical standards have been maintained in our study, as detailed below. We also address other reviewers' comments below, and commit to incorporate the feedback in the camera-ready version, if accepted.
+
+\mypara{Clarification regarding ethics approval}
+%
+The study is approved by the Institute Ethics Committee. We have performed all procedures according to the WMA Declaration of Helsinki and the research guidelines of local government to ensure ethical standards. We have obtained informed written consent from the patients at the time of recruitment, and protect their privacy by fully anonymizing the data. 
+
+\mypara{Dataset availability}
+%
+As promised in the paper, we will make the dataset available through a public webpage containing the details of obtaining the data. Our dataset will be the first public dataset on GBC detection. We will also release the full source code and pre-trained models.
+
+\mypara{\ra ~-- Apart from the in-house dataset, only one public dataset is used}
+%
+The focus of this work is on GBC detection, for which we have used our in-house dataset. We felt that it would be a natural curiosity of the readers to know the efficacy of our method on other cancer detection problems from USG images. Hence, only for this purpose, we chose breast cancer detection, a prominent problem in this domain, and validated the MS-SoP classifier on the public breast ultrasound image (BUSI) dataset. We note that while breast cancer detection relies on tissue/ mass characterization, GBC detection is primarily based on wall shape and mass anomaly. The performance gain using MS-SoP on these two different types of cancers indicates efficient malignancy representation by our model. We plan to evaluate our method on other datasets as future work to formally understand the efficacy and the characterization of malignancy representation by MS-SoP for different types of cancers. Thus, while analysis of the proposed method on other cancer datasets is indeed an exciting idea, we feel it is beyond the scope of our current work on GBC detection.
+%We agree that evaluating our methods on more public datasets for cancer detection would be interesting. We plan to take it as a future work as our primary focus for this work was on detecting the GBC from USG as no such prior work exists. A natural follow-up would be to explore the applicability of the methods on other type of cancers. We thus explored the MS-SoP classifier on a public dataset (BUSI) to detect breast cancer from USG images. We would also like to note that while breast cancer detection relies on the appearance of the tissue/ mass, GBC is primarily based on wall shape and regularity. The performance gain using MS-SoP on two different cancers indicates generalizability. 
+
+\mypara{\ra ~-- Inconsistent performance gain of MS-SoP classifier compared to Resnet50 in Tab 1 and Tab 3}
+%
+The images in the BUSI dataset (results in Tab 3) are already in the form of cropped regions of interest (ROIs) that localizes the pathology present (L:727-731). An appropriate comparison of Tab 3 would be with Tab 4, which reports Resnet50 and MS-SoP results on the localized ROIs. The performance of MS-SoP as compared to Resnet50 on the localized ROIs is consistent across two datasets containing different types of cancers.
+
+\mypara{\ra ~-- Why could GBCNet avoid the noise, textures, and artifacts}
+%
+The localization stage in GBCNet helps mitigate the effect of noise and artifacts (Fig 5). The improvement in sensitivity using MS-SoP classifier on localized ROI indicates its effectiveness in learning richer representation for malignancy (Tab 4, Fig 8a). We use the visual acuity curriculum to tackle the texture bias (Sec 6.4).
+
+% \mypara{\rb ~-- Second order pooling is not discussed in detail}
+% %
+% We provided the necessary formulations (equations 5--8) and the schematic (Fig 2) in main text. Our public code-base should be able to provide all details.
+
+\mypara{\rb ~-- Tab 1 is not a fair comparison as GBCNet has two-stages}
+%
+We have used Tab 1 to give a comprehensive overview of how human experts, different off-the-shelf models, and GBCNet perform for detecting GBC from USG images. We agree that except Faster-RCNN, the other SOTA models in Tab 1 are single stage. Though, we do not agree with the fairness part, since on natural images, both two-stage and single stage models perform competitively. On the other hand, we have also compared GBCNet (ROI+MS-SoP) with other two-stage (localization+classification) models, namely, ROI+VGG16, ROI+Resnet50, and ROI+InceptionV3 (Tab 4, Fig 8a, and Suppl Tab S1). We can add these results to Tab 1 if the reviewers feel that would add more clarity. Similarly, Fig 5 demonstrates how the noise and artifacts degrade the performance of the SOTA models in the absence of localization.  
+
+\mypara{\rb ~-- Ablation of MS-SoP classifier is not included}
+%
+We show some ablation experiments here in  \cref{tbl:ms-sop-ablation} for reference, and will be happy to add them in the final version. We hope that not including the said ablation would not take the focus away from our key contribution in robust detection of GBC and reaching SOTA performance. 
+
+\begin{table}[t]
+	\centering
+	\footnotesize
+%	\captionsetup{width=\linewidth}
+%    \setlength{\tabcolsep}{6pt}
+%	\resizebox{\linewidth}{!}{%
+    \begin{tabular}{@{}lccc@{}}
+    \toprule[1pt]
+    \textbf{Model} & \textbf{Spec.} & \textbf{Sens.} \\
+    \midrule[0.5pt]
+    ROI+MS-SoP (GBCNet) & 94.2 $\pm$ 3.7 & 92.3 $\pm$ 7.1 \\
+    ROI+MS-SoP (channel-wise pooling) & 90.4 $\pm$ 4.7 & 86.1 $\pm$ 6.8  \\
+    ROI+MS-SoP (spatial pooling) & 90.0 $\pm$ 6.4 & 88.2 $\pm$ 6.4 \\
+    ROI+MS (w/o SoP) & 88.7 $\pm$ 6.0 & 87.2 $\pm$ 6.4 \\
+    ROI+SoP (w/o MS) & 91.4 $\pm$ 4.8 & 85.4 $\pm$ 7.9 \\
+    \bottomrule[1pt]
+    \end{tabular}
+%	}
+	\caption{Ablation of Ms-SoP. We show the specificity and sensitivity of MS-SoP with two alternatives - MS-SoP with (i) only channel-wise and (ii) only spatial pooling. We also show the efficacy of using multi-scale and second-order pooling in conjunction.}
+\label{tbl:ms-sop-ablation}
+\end{table}
+
+\mypara{\rb ~-- The synthetic image in Fig 7 could be replaced with a real image}
+%
+Thank you for the suggestion. We can easily incorporate this change in the final version.
+
+\mypara{\rc ~-- The work is a technical achievement and has novelty but is specialized in nature}
+%
+We agree. However, we note that GBC detection is a very important yet overlooked problem, and its solution along with the publicly available GBC dataset would be of great interest to the medical imaging audience of the CV community. Additionally, the novel methods introduced in this work would be suitable for USG imaging modality, and therefore, the work would be an appropriate contribution to the conference.
+
+
+%%%%%%%%% REFERENCES
+% {\small
+% \bibliographystyle{ieee_fullname}
+% \bibliography{egbib}
+% }
+
+\end{document}

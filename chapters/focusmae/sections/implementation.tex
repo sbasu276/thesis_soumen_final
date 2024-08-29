@@ -1,0 +1,22 @@
+\section{Implementation and Evaluation}
+\label{sec:focusmae_impl}
+In this section we discuss the specific training setup with FocusMAE for our GBC detection task. We use the FocusMAE-based pretraining on the ViT encoder, enabling it to learn disease representation for the downstream GBC classification task. Following this pretraining phase, the ViT network is fine-tuned for the GBC classification task using classification loss. The pretraining and fine-tuning details including the hyperparameters are discussed here.
+
+\mypara{Pretraining}
+%
+We implemented our experiments using PyTorch \cite{paszke2019pytorch}. We used Kinetics-400 pretrained weights for MAE weight initialization. Although there is a domain gap in natural and medical image data, studies show that pretraining on natural image data improves network performance on medical imaging tasks \cite{alzubaidi2020transferlearning, cheng2017transfer}.
+We used the video sub-sampling scheme discussed in \cref{sec:method_subsample}. We apply random-resize cropping, random horizontal flipping, and random scaling as part of the data augmentations for pretraining. We chose ViT-S as the backbone. 
+We use $2 \times 3 \times 16 \times 16$ sized patches on the input video which has size $16\times3\times224\times224$. Consequently, we obtain $\frac{16}{2} \times \frac{3}{3}\times \frac{224}{16} \times \frac{224}{16} = 1568$ tokens for each video.
+%We use patch size of $2 \times 3 \times 16 \times 16$, resulting in $\frac{16}{2} \times \frac{3}{3}\times \frac{224}{16} \times \frac{224}{16} = 1568$ tokens for an input video of size $16\times3\times224\times224$.  
+The pretraining phase is trained with an AdamW optimizer with LR $0.0001$, layer decay $0.75$, and weight decay $0.05$, for minimizing the MSE loss over 300 epochs. The batch size was 2. Warm-up was done for 3 epochs with LR $0.001$.
+
+\mypara{Fine-tuning}
+%
+\label{label:impl_ft}
+For sub-sampling the videos during fine-tuning, a denser sample rate of 3 was used. We used 16 frames to constitute a clip. From each video, we sampled 5 clips uniformly. During inference, we predict the labels for each of the clips. If any of the clips is predicted as malignant, the entire video is labelled as malignant. We minimized a soft-target cross entropy loss using an AdamW optimizer with LR $10^{-5}$, layer decay $0.75$, and weight decay $0.05$ for 30 epochs. We used a batch size of 4. 
+
+We have used a machine with an Intel Xeon Gold 5218@2.30GHz dual-core processor and 8 Nvidia Tesla V100 32GB GPUs for our experiments. 
+
+\mypara{Evaluation Metrics}
+%
+We used video-level accuracy, specificity (true negative rate), and sensitivity (true positive rate/ recall) for assessing the video-based GBC identification. %We have used 5-fold cross-validation. 

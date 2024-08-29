@@ -1,0 +1,22 @@
+\section{Related Work}
+%
+\myfirstpara{Deep Learning for GB related Diseases}
+%
+Several studies have leveraged DNNs to detect various GB conditions, including calculi, cholecystitis, and polyps, using diagnostic images. For instance, \cite{gbYolo} applied YOLOv3 to identify the GB and stones in CT images. \cite{gbPolyp} focused on GB segmentation and employed an AdaBoost classifier for polyp diagnosis. Meanwhile, \cite{gbPolyp2} concentrated on classifying neoplastic polyps in cropped gallbladder ultrasound (USG) images, utilizing an InceptionV3 model. Additionally, \cite{jang2021diagnostic} employed ResNet50 to diagnose polypoidal lesions through endoscopic USG.
+
+\mypara{DNNs for GBC Detection}
+%
+Despite numerous studies on DNNs for gallbladder-related diseases, only a few have explored AI-based detection of GBC. Chang \etal \cite{chang2022ct} employed a UNet-based denoising approach to enhance the image quality of Low-Dose CT scans for characterizing GBC, focusing primarily on segmentation methods. In contrast, Basu \etal \cite{basu2022surpassing} introduced a specialized CNN architecture called MS-SoP and a Gaussian blurring-based curriculum for efficient GBC detection in USG images. Gupta \etal \cite{gbc-lancet} further uses the MS-SoP architecture for a patient subgroup study on a large prospective patient cohort. \cite{basu2023radformer} exploits a transformer-based dual-branch architecture with bag-of-word style feature embedding for accurate and explainable GBC detection. \cite{basu2022unsupervised}, on the other hand, utilizes unsupervised contrastive learning to learn malignancy representations. 
+%
+Despite the above studies, we observe a notable gap in the literature regarding models for video-based GBC detection from USG videos. This gap in research motivates the current work.
+
+%\mypara{Deep Learning for USG Modality}
+%
+%DNN models have found extensive applications in USG imaging tasks, including the detection of ovarian cancer \cite{zhang2019improved}, identification of breast cancer regions, masses, and boundaries \cite{cao2019BreastLesion,ning2020multi, zhu2020second}, as well as the measurement of head circumference in fetal ultrasound images \cite{sobhaninia2019FetalHC, budd2019FetalHC}. 
+
+\mypara{Video-based Classification and Recognition}
+%
+Transformers have seen an influx over CNNs in recent years due to their superior performance. Transformers with combined spatiotemporal attention \cite{vivit}, hierarchical spatiotemporal attention \cite{videoswin}, and separable spatial and temporal attention \cite{timesformer, vidtr} are popular for video-based recognition or classification. %Additionally, related areas of study in weakly-supervised video classification encompass video action recognition \cite{TSN}, temporal action localization \cite{actionformer}, and anomaly detection \cite{weaklypolyp}. 
+
+\mypara{Masked Autoencoder for Videos}
+MAEs have gained popularity for self-supervised video representation learning (SSL). \cite{maest, videomae} extend the MAE from image to video domain. \cite{omnimae} used a combined image and video-based MAE pipeline. On the other hand, \cite{qing2023mar} introduced running cell masking to reduce cost. Another study \cite{videomaev2} recommended masking decoder tokens as well. \cite{adamae} recommends an adaptive masking strategy instead of random masking. Some studies look for priors like motion trajectory \cite{mgmae,patrick2021keeping, Sun_2023_CVPR}. \cite{li2022semmae} recommends using semantic parts guided MAE. \cite{maskvit} introduces the usage of both spatial and spatiotemporal attention along with variable token masking ratio.

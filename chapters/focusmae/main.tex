@@ -1,0 +1,107 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[inline]{enumitem}
+\usepackage[review]{cvpr}      % To produce the REVIEW version
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{epsfig}
+\usepackage{physics}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{framed}
+\usepackage{multirow}
+\usepackage{xcolor,soul}
+\usepackage{latexsym,url}
+\usepackage{stackengine} 
+
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+\def\cvprPaperID{14411} 
+\def\confName{CVPR}
+\def\confYear{2024}
+
+\definecolor{todocolor}{RGB}{200,120,120}
+\sethlcolor{todocolor}
+\newcommand{\todo}[1]{\textcolor{black}{\hl{#1}}}
+
+\newcommand{\multilineC}[1]{\begin{tabular}[b]{@{}c@{}}#1\end{tabular}}
+\newcommand{\multilineCB}[1]{\textbf{\multilineC{#1}}}
+
+\def\etal{{et.~al}}
+\def\sota{\textsc{sota}\xspace}
+\def\cnn{\textsc{cnn}\xspace}
+\def\usg{\textsc{us}\xspace}
+\def\gbc{\textsc{gbc}\xspace}
+\def\gb{\textsc{gb}\xspace}
+\def\mri{\textsc{mri}\xspace}
+\def\ct{\textsc{ct}\xspace}
+\def\roi{\textsc{roi}\xspace}
+\def\rois{\textsc{roi}s\xspace}
+\def\gbcnet{\textsc{gbcn}et\xspace}
+\def\mssop{\textsc{MS-SOP}\xspace}
+\def\myarch{FocusMAE\xspace}
+
+\newcommand{\myfirstpara}[1]{\noindent \textbf{#1.}}
+\newcommand{\mypara}[1]{\vspace{0.1em} \myfirstpara{#1}}
+
+\newcommand\oast{\stackMath\mathbin{\stackinset{c}{0ex}{c}{0ex}{\ast}{\bigcirc}}}
+
+\newcommand{\beginsupplement}{%
+        \setcounter{table}{0}
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \setcounter{figure}{0}
+        \renewcommand{\thefigure}{S\arabic{figure}}%
+     }
+
+\begin{document}
+
+\title{FocusMAE: Gallbladder Cancer Detection from Ultrasound Videos with \\ Focused Masked Autoencoders}
+
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/introduction}
+
+\input{sections/rel_work}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figs/arch.png}
+    \caption{Overview of the proposed FocusMAE pipeline. Our design proposes guiding the masking tokens with the localization of the candidate focus regions containing high-information. The systematic biasing with focused high-information region priors helps to build a more meaningful reconstruction task for disease representation learning. }
+    \label{fig:enter-label}
+\end{figure*}
+
+\input{sections/method}
+
+\input{sections/table-main}
+
+\input{sections/data}
+
+\input{sections/implementation}
+
+\input{sections/result}
+
+\input{sections/conclusion}
+
+\clearpage
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{gbcvid-ref}
+}
+
+% \clearpage
+% %\appendix
+% %\beginsupplement
+% \input{sections/supple}
+
+\end{document}

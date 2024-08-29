@@ -1,0 +1,147 @@
+% CVPR 2022 Paper Template
+% based on the CVPR template provided by Ming-Ming Cheng (https://github.com/MCG-NKU/CVPR_Template)
+% modified and extended by Stefan Roth (stefan.roth@NOSPAMtu-darmstadt.de)
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+%\usepackage[review]{cvpr}      % To produce the REVIEW version
+\usepackage{cvpr}              % To produce the CAMERA-READY version
+%\usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Include other packages here, before hyperref.
+%\usepackage[accsupp]{axessibility}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{epsfig}
+\usepackage{physics}
+\usepackage[inline]{enumitem}
+\usepackage{comment}
+\usepackage{subcaption}
+\usepackage{framed}
+\usepackage{multirow}
+\usepackage{xcolor,soul}
+\usepackage{latexsym,url}
+\usepackage{stackengine} 
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues, e.g. with the
+% file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete
+% ReviewTempalte.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you
+%  should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{8360} % *** Enter the CVPR Paper ID here
+\def\confName{CVPR}
+\def\confYear{2022}
+
+\definecolor{todocolor}{RGB}{200,120,120}
+\sethlcolor{todocolor}
+\newcommand{\todo}[1]{\textcolor{black}{\hl{#1}}}
+
+\newcommand{\multilineC}[1]{\begin{tabular}[b]{@{}c@{}}#1\end{tabular}}
+\newcommand{\multilineCB}[1]{\textbf{\multilineC{#1}}}
+
+% \def\etal{{et.~al}}
+% \def\sota{\textsc{sota}\xspace}
+% \def\cnn{\textsc{cnn}\xspace}
+% \def\usg{\textsc{usg}\xspace}
+% \def\gbc{\textsc{gbc}\xspace}
+% \def\gb{\textsc{gb}\xspace}
+% \def\mri{\textsc{mri}\xspace}
+% \def\ct{\textsc{ct}\xspace}
+% \def\roi{\textsc{roi}\xspace}
+% \def\rois{\textsc{roi}s\xspace}
+% \def\gbcnet{\textsc{gbcn}et\xspace}
+% \def\mssop{\textsc{MS-SOP}\xspace}
+
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+%\title{Surpassing the Human Accuracy in Detecting Gallbladder Cancer from USG Images with Deep Neural Networks and Curriculum Learning}
+%\title{GBCNet: Surpassing the Human Accuracy in Detecting Gallbladder Cancer from Ultrasound Images with Deep Neural Networks and Curriculum Learning}
+%\title{GBCNet: A Three Stage Neural Network Architecture for \\ Detecting Gallbladder Cancer from Ultrasound Images}
+\title{Surpassing the Human Accuracy: \\ Detecting Gallbladder Cancer from USG Images with Curriculum Learning}
+
+\author{Soumen Basu\textsuperscript{1}, Mayank Gupta\textsuperscript{1}, Pratyaksha Rana\textsuperscript{2}, Pankaj Gupta\textsuperscript{2}, Chetan Arora\textsuperscript{1} \\
+\textsuperscript{1} Indian Institute of Technology, Delhi, India \\ 
+\textsuperscript{2} Postgraduate Institute of Medical Education and Research, Chandigarh, India\\
+%{\tt\small \href{https://gbc-iitd.github.io/gbcnet.html}{https://gbc-iitd.github.io/gbcnet.html}}
+%{\tt\small \{soumen.basu, mayank.gupta, chetan\}@cse.iitd.ac.in}\\
+%{\tt\small pratyaksha\_25@yahoo.in, pankajgupta959@gmail.com}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+}
+
+\maketitle
+
+%%%%%%%%% ABSTRACT
+\input{sections/abstract}
+
+%%%%%%%%% BODY TEXT
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figs/teaser.png}
+    \caption{(a), (b), and (c) Normal, benign, and malignant \gb sample in \usg images, respectively. While normal or benign \gb have regular anatomy, clear boundary is absent in malignant \gb. (d) A malignant (biopsy-proven) \gb sample. (e) Shadows having visual traits of a \gb leads to localization error in ResNet50. (f) \gbcnet tackles shadow artifacts well. (g) Another sample of malignant \gb. (h) The radiologist incorrectly diagnosed the \gb as benign based on the stone and wall thickening. (i) \gbcnet helps the radiologist to identify the salient region with liver infiltration by the \gb, a critical feature of \gbc, and correct the prediction.}
+    \label{fig:teaser}
+\end{figure}
+
+\input{sections/intro}
+%
+\begin{figure*}[t]
+	\centering
+	\includegraphics[width=\textwidth]{./figs/arch-compact.jpg}
+	\caption{Overview of the \gbcnet architecture. The region selection network localizes the candidate regions of interest and the multi-scale, second-order pooling-based (MS-SoP) classifier at the next stage predicts malignancy for each region. The predictions for each region is aggregated to get the final prediction on the whole image.}
+	\label{fig-arch-overview}
+\end{figure*}
+%
+\input{sections/related-work}
+\input{sections/method}
+\input{sections/method-ms-sop}
+\input{sections/method-visual-acuity}
+\input{sections/dataset}
+
+%results table, pasted here for formatting reasons
+\input{sections/table-cross-val.tex}
+
+\input{sections/implementation}
+\input{sections/results}
+\input{sections/conclusion}
+
+
+%%%%%%%%% REFERENCES
+\clearpage
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{gbc-ref}
+}
+
+%%%%%%%%% SUPPLEMENTARY
+% \clearpage
+% \appendix
+% \beginsupplement
+% \input{sections/supple}
+
+\end{document}

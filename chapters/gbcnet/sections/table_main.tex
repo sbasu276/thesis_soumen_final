@@ -1,0 +1,33 @@
+\begin{table}[t]
+	\centering
+	\footnotesize
+	%\captionsetup{width=\textwidth}
+	%\setlength{\tabcolsep}{10pt}
+%	\resizebox{ \linewidth}{!}{%
+		\begin{tabular}{lcccccc}
+			\toprule[1pt]
+			\multirow{2}{*}{\textbf{Method}} & \multicolumn{3}{c}{\textbf{Test Set}} & \multicolumn{3}{c}{\textbf{Cross Val.}} \\
+			\cmidrule{2-7}
+			& \textbf{Acc.} & \textbf{Spec.} & \textbf{Sens.} & \textbf{Acc.} & \textbf{Spec.} & \textbf{Sens.}  \\
+			\midrule[0.5pt]
+			Radiologist A & 0.816 & 0.873 & 0.707 & -- & -- & --  \\
+			Radiologist B & 0.784 & 0.811 & 0.732 & -- & -- & --  \\
+			\midrule
+			VGG16 & 0.721 & 0.900 & 0.381 & 0.693 $\pm$ 0.036 & 0.960 $\pm$ 0.046 & 0.495 $\pm$ 0.234 \\ 
+			ResNet50 & 0.787 & 0.875 & 0.619 & 0.867 $\pm$ 0.070 &  0.926 $\pm$ 0.069 & 0.672 $\pm$ 0.147 \\ 
+            %0.865 +- 0.070
+			Inception V3 & 0.850 & 0.875 & 0.801 & 0.844 $\pm$ 0.039 & 0.953 $\pm$ 0.029 & 0.807 $\pm$ 0.097 \\ % 0.869 $\pm$ 0.039 & 0.913 $\pm$ 0.032 & 0.708 $\pm$ 0.078 \\
+			%\midrule
+			Faster-RCNN & 0.779 & 0.762 & 0.810 & 0.757 $\pm$ 0.053 & 0.840 $\pm$ 0.046 & 0.808 $\pm$ 0.104 \\
+			RetinaNet & 0.836 & 0.863 & 0.786 & 0.749 $\pm$ 0.073 & 0.867 $\pm$ 0.078 & 0.791 $\pm$ 0.089 \\
+			EfficientDet & 0.779 & 0.863 & 0.620 & 0.739 $\pm$ 0.084 & 0.881 $\pm$ 0.099 & 0.858 $\pm$ 0.061 \\
+			\midrule%[1.5pt]
+			GBCNet & 0.910 & 0.900 & 0.929 & 0.882 $\pm$ 0.051 & 0.942 $\pm$ 0.037 & \textbf{0.923 $\pm$ 0.071} \\ 
+			GBCNet+VA & \textbf{0.959} & \textbf{0.950} & \textbf{0.976} & \textbf{0.921 $\pm$ 0.029} & \textbf{0.967 $\pm$ 0.023} & 0.919 $\pm$ 0.063 \\
+			\bottomrule[1pt]
+		\end{tabular}
+%	}
+	\caption[Comparing GBCNet with baselines for detecting GBC from USG images]{The model performances on the test set and the cross validation (Mean$\pm$SD) in classifying \gbc from USG images. %Apart from the standard accuracy of classifying normal, benign, and malignant \gb, we show the binary classification (malignancy vs. non-malignancy) accuracy on the test set (column Acc.-2). 
+    We also report the \gbc detection performance of two expert radiologists on the test set. The radiologists classified each image without accessing the biopsy results or any other patient data. Our model significantly outperforms even the human radiologists. Recall that our ground truth labels are biopsy-proven. The performance of human radiologists in the our study is comparable to that reported in literature \cite{bo2019diagnostic, gupta2020evaluation}. }
+	\label{tbl:perf_gbc}
+\end{table}

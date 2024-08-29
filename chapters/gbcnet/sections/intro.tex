@@ -1,0 +1,36 @@
+
+\section{Introduction}
+%
+According to GLOBOCAN 2018 \cite{bray2018global}, worldwide about 165,000 people die of \gbc annually. For most patients, \gbc is detected at an advanced stage, with a mean survival rate for patients with advanced \gbc of six months and a 5-year survival rate of 5\% \cite{randi2006gallbladder, gupta2021locally}. Detecting \gbc at an early stage could ameliorate the bleak survival rate. 
+
+Lately, machine learning models based on convolutional neural network (\cnn) architectures have made transformational progress in radiology, and medical diagnosis for diseases such as breast cancer, lung cancer, pancreatic cancer, and melanoma \cite{ardila2019end, bejnordi2017diagnostic, chu2019application, codella2017deep, han2017breast}. However, their usage is conspicuously absent for the \gbc detection. Although there has been prior work involving segmentation and detection of the \gb abnormalities such as stones and polyps \cite{gbPolyp, gbPolyp2, gbAutomatic}, detection of \gbc is missing from the list. A search on Google Scholar with keywords ``artificial intelligence'' and ``gallbladder cancer'' returned 204 articles between 2015-2021. In these, we did not find any published article on deep learning-based \gbc detection from \usg images.
+
+%\par According to GLOBOCAN 2018, GBC causes 165,087 deaths and 219,420 incidences every year worldwide \cite{armitage2014abeloff, bray2018global}. 
+%%GBC is one of the leading causes of cancer-related deaths among Indian women \cite{randi2006gallbladder, bray2018global}. 
+%The disease is prevalent in China, India, and Latin America. Canada, Australia, USA, and Europe also face a high incidence of GBC. 
+%%\figref{fig:sec1-1} shows the detailed distribution of the incidence rate around the world.  
+%GBC is detected at an advanced and metastasized stage for most patients, impeding curative resection and resulting in a dismal prognosis \cite{randi2006gallbladder, gupta2021locally}. 
+%The overall mean survival rate for patients with advanced GBC is six months, with a 5-year survival rate of 5\%. 
+%%In the USA, only about 1 in every 5 cases of GBC are identified in an early stage \cite{howlader2017seer}.
+ 
+Early diagnosis and resection are critical for improving the survival rate of \gbc. Due to the non-ionizing radiation, low cost, portability, and accessibility, \usg is a popular diagnostic imaging modality. Although identifying anomalies such as stones or \gb wall thickening at routine \usg is easy, accurate characterization of the wall thickening is challenging \cite{gupta2020imaging, gb-rads-paper}. Often, \usg is the sole diagnostic imaging performed for patients with suspected \gb ailments. If malignancy is not suspected, no further testing is usually performed, and \gbc could silently advance. Therefore, it is imperative to develop and understand the characterization of \gb malignancy from \usg images.
+
+There are significant challenges in using \cnn models for \usg image analysis. Unlike \mri or \ct, \usg images suffer from low imaging quality due to noise and other sensor artifacts. The views are also not aligned due to the handheld nature of the sensor. We observe that modern \cnn classifiers fail to localize the salient \gb region due to the presence of shadows which often have similar visual traits of a \gb in \usg images (\cref{fig:teaser}). Training object detectors for \gbc detection gets biased towards learning from spurious textures due to noise and adjacent organ tissues rather than the shape or boundary of \gb wall, which results in poor accuracy. Further, unlike normal and benign \gb regions, which have regular anatomy, malignant cases are much harder to detect due to the absence of a clear \gb boundary or shape and the presence of a mass.
+
+\mypara{Contributions} 
+%
+The key contributions of this work are:
+%\vspace{-0.5em}
+\begin{enumerate}%[label=\textbf{(\arabic*)}]
+%\itemsep-0.5em
+	\item We focus on circumventing the challenges for automated detection of \gbc from \usg images and propose a deep neural network, GBCNet, for detecting \gbc from \usg images. GBCNet extracts candidate regions of interest (\rois) from the \usg to mitigate the effects of shadows and then uses a new  multi-scale, second-order pooling-based (MS-SoP) classifier on the \rois to classify gallbladder malignancy.
+    %The first two stages of GBCNet are inspired by two-stage object detectors but focus only on detecting the \gb (and not cancer) and selecting a focused region of interest (\roi) to mitigate the effects of shadows. The third stage uses a new multi-scale, second-order pooling (MS-SoP) architecture to classify gallbladder malignancy.
+	MS-SoP encodes rich feature representations for malignancy detection. 
+	%
+	\item Even though GBCNet shows improvement in \gb malignancy detection over multiple \sota models, the spurious texture present in an \roi bias the classification unit towards generating false positives. To alleviate the issue, we propose a training curriculum inspired by human visual acuity \cite{kwon2016compensation, vogelsang2018VisualAcuity}. Visual acuity refers to the sharpness of visual stimuli. %Studies suggest that an initial period of low visual acuity followed by high visual acuity helps the visual cortex in humans to formulate a better receptive field and emphasizes features such as shape or structure while identifying objects. 
+	The proposed curriculum mitigates texture bias and helps GBCNet focus on shape features important for accurate \gbc detection from \usg images.% We validate the same in the context of \gbc detection from \usg images. %only, where we show in our experiment that our model after training with the proposed curriculum better focuses on GB boundaries.
+	%
+	\item A lack of publicly available \usg image datasets related to \gb malignancy adds to the difficulty of utilizing \cnn models for detecting \gbc. We have collected, annotated, and curated a \usg image dataset of 1255 abdominal \usg images collected from 218 patients. We refer this dataset as the Gallbladder Cancer Ultrasound (GBCU) dataset.
+	%The dataset is available to the community.
+	%post-acceptance of the paper after signing the necessary privacy agreement with our hospital. 	
+\end{enumerate}

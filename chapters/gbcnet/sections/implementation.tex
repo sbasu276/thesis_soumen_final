@@ -1,0 +1,55 @@
+%% Implementation
+
+\section{Implementation Details}
+ \begin{table}[t]
+\centering
+\scriptsize
+%\setlength{\tabcolsep}{4pt}
+    \resizebox{ \linewidth}{!}{%
+        \begin{tabular}{p{0.1\linewidth}p{0.42\linewidth}p{0.06\linewidth}p{0.2\linewidth}p{0.05\linewidth}p{0.06\linewidth}}
+        \toprule[1.5pt]
+        \textbf{Model} & \textbf{Description} & \textbf{Input Size} & \textbf{Optimizer} & \textbf{Batch size} & \textbf{Epochs/ Steps}
+        \\ \midrule[0.75pt]
+        YOLOv4 \cite{yolov4} & CSPDarknet53 backbone, PANet neck, anchor-based YOLO head. Total 162-layers. Backbone was frozen for first 800 step. Entire network was trainable thereafter. Single stage, anchor-based  & $608\times608\times3$ & SGD LR = 0.0001 momentum = 0.95 weight decay = 0.0005 & 64 & 3000 steps \\ \hline
+        Reppoints \cite{reppoints} & Resnet-101 backbone, Group Normalization neck, and a reppoints head. Backbone was frozen for first 30 epochs, and entire network was trainable thereafter. Two-stage, anchor-free & $800 \times 1333 \times 3$ & SGD LR = 0.001 momentum = 0.9 weight decay = 0.0001 & 4 & 50 epochs \\ \hline
+        Centripetal-Net \cite{centripetalnet} & HourglassNet-104 backbone. Enitre network was trainable. Anchor-free & $511 \times 511 \times 3$ & Adam LR = 0.0005 & 4 & 50 epochs \\ \hline
+        ResNet \cite{resnet} & Resnet-50 used. All layers were trainable. LR decays by 10\% after every 5 epochs through a step LR scheduler. & $224\times224\times3$ & SGD LR = 0.005 momentum = 0.9 weight decay = 0.0005 & 16 & 100 epochs \\ \hline
+        VGG \cite{vgg} & VGG-16 is used. All layers were trainable. LR decays by 10\% after every 5 epochs through a step LR scheduler. & $224\times224\times3$ & SGD LR = 0.005 momentum = 0.9 weight decay = 0.0005 & 16 & 100 epochs \\ \hline
+        Inception \cite{inception} & Inception-V3 used. All layers were trainable. LR decays by 10\% after every 5 epochs through a step LR scheduler. & $299\times299\times3$ & SGD LR = 0.005 momentum = 0.9 weight decay = 0.0005 & 16 & 100 epochs \\ \hline
+        RetinaNet \cite{retinanet} & Resnet-18-FPN used as backbone. All layers were trainable. & $512\times512\times3$ & Adam LR = 0.0001 & 8 & 50 epochs \\ \hline
+        EfficientDet \cite{efficientdet} & EfficientNet-B4 used as backbone and BiFPN as feature network. All layers were trainable. & $1024\times1024\times3$ & Adam LR = 0.001 & 2 & 50 epochs \\ 
+        \bottomrule
+    \end{tabular}
+    }
+    \caption[Implementation details for the different baseline networks]{Implementation details for the different baseline networks used for classification and \gb localization.}
+    \label{tbl:configs}
+\end{table}
+
+\subsection{Transfer Learning and Data Augmentation}
+%
+Studies show that pre-training on natural image data improves network performance on medical image data \cite{alzubaidi2020transferlearning, cheng2017transfer}. We use \roi detection networks pre-trained on the COCO \cite{coco}, and classifiers pre-trained on ImageNet data \cite{imagenet}. We use resizing, center-cropping, and normalization data augmentations to avoid over-fitting on the small \usg dataset. We refrain from using the standard transformations like rotation or translation as they may create unrealistic images inconsistent with the ultrasound acquisition. This is also suggested in previous literature \cite{tirindelli2021rethinking}. Rotations or translation in captured ultrasound images may change the anatomical positioning information of the organs. Further, since the B-mode ultrasound captures a 2D slice of the 3D organs, rotating the probe would change the cutting plane, which is not modeled by the standard rotation transformation. 
+
+\subsection{Hyper-parameters}
+%
+In the first-stage (\roi detection network) a Faster-RCNN \cite{fasterrcnn} with a Resnet-50 frozen backbone was trained using the SGD optimizer for 60 epochs with learning rate (LR) 0.005, momentum 0.9, and batch size 16. The input size was $800 \times 1333 \times 3$. In the second stage (classification), our proposed 
+MS-SoP classifier was trained for 100 epochs using SGD with LR 0.005, momentum 0.9, and weight decay 0.0005. The batch size was 16. All layers of the classifier were trainable. The input images were resized to $224\times224\times3$. We train and freeze the \roi detection network before training the classifier. We used $\sigma_0\!=\!16$, $k'\!=\!10$, $k\!=\!5$, for the curriculum. We trained our models on an Nvidia Quadro P5000 16GB GPU. \cref{tbl:configs} lists the configurations of the other baseline models used during experiments. The table includes a brief description of the various stages of the network, input image sizes ($H\times W\times D$), the optimizer, and relevant hyper-parameters such as learning rate, weight decay, momentum, batch size, and the number of training epochs/steps. 
+
+
+\section{Evaluation Metrics}
+\label{sec:eval_metric}
+%
+\mypara{Localization Metrics}
+%
+We use mean intersection over union (mIoU), precision, and recall for comparing region selection models. IoU refers to the area of overlap (intersection) divided by the area of union between the predicted and ground truth bounding boxes. For calcutating mIoU, IoU over all samples are averaged. 
+For computing precision and recall for the bounding boxes, as suggested by \cite{ribli2018detecting}, if the center of the predicted region lies within the bounding box of the ground truth region, then we consider a region prediction to be a true positive; otherwise, we consider the region prediction to be a false positive due to localization error. Further, we consider the zero/ no region prediction as a false negative (all our images contain GB, and the network's task is to merely localize it). 
+
+\mypara{Classification Metrics}
+%
+To assess the classification models for \gbc detection, we use accuracy, sensitivity, and specificity as the evaluation metrics. 
+\begin{align*}
+    \text{Sensitivity (Recall, True Positive Rate)} &= \frac{TP}{TP+FN} \\
+    \text{Specificity (True Negative Rate)} &= \frac{TN}{TN+FP} %\\
+    %\text{Accuracy} &= \frac{TP+TN}{TP+TN+FP+FN}
+\end{align*}
+Here TP, TN, FP, and FN refer to the number of True Positives, True Negatives, False Positives, and False Negatives, respectively.
+
